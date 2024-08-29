@@ -85,7 +85,7 @@ To get started with the project, follow these steps:
    - **Server:** In the `server` directory, run:
 
      ```bash
-     npm start
+     npm run dev
      ```
 
    The client will run on `http://localhost:3000` and the server will run on `http://localhost:5000`.
