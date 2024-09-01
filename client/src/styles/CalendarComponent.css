@@ -1,0 +1,163 @@
+/* CalendarComponent.css */
+
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f4f8;
+  margin: 0;
+  padding: 0;
+}
+
+.calendar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.calendar-wrapper .react-calendar {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  max-width: 90vw; /* Ensures calendar doesn't exceed the viewport width */
+}
+
+.calendar-wrapper .react-calendar__tile {
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.calendar-wrapper .react-calendar__tile:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Monthly Totals */
+.monthly-totals {
+  margin-top: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.monthly-totals h2 {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.monthly-totals p {
+  font-size: 1.2em;
+  margin: 10px 0;
+  color: #666;
+}
+
+/* Ma'asrot Styling */
+.monthly-totals p:last-child {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+/* Navbar Styles */
+.navbar {
+  width: 100%;
+  background: linear-gradient(to right, #4CAF50, #8BC34A);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap; /* Allows the items to wrap on smaller screens */
+}
+
+.navbar h1 {
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap; /* Adjust the items on smaller screens */
+}
+
+.navbar ul li {
+  margin-left: 20px;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.navbar ul li a:hover {
+  color: #333;
+}
+
+/* Media Queries for Mobile Phones */
+@media (max-width: 600px) {
+  .calendar-wrapper {
+    padding: 10px;
+  }
+
+  .navbar {
+    padding: 10px; /* Reduces padding on smaller screens */
+    flex-direction: column; /* Stacks navbar items vertically */
+    align-items: flex-start;
+  }
+
+  .navbar h1 {
+    font-size: 1.2em; /* Adjusts font size for mobile */
+    margin-bottom: 10px;
+  }
+
+  .navbar ul {
+    flex-direction: column; /* Stacks items vertically on mobile */
+    width: 100%;
+  }
+
+  .navbar ul li {
+    margin-left: 0;
+    margin-bottom: 10px; /* Adds spacing between items */
+  }
+
+  .monthly-totals {
+    width: 90%; /* Makes totals section wider on smaller screens */
+    max-width: none; /* Removes the max-width constraint */
+    padding: 10px;
+  }
+
+  .monthly-totals h2 {
+    font-size: 1.3em; /* Reduces font size for mobile */
+  }
+
+  .monthly-totals p {
+    font-size: 1em; /* Reduces font size for mobile */
+  }
+
+  .calendar-wrapper .react-calendar {
+    max-width: 100%; /* Uses full width on smaller screens */
+  }
+
+  .calendar-wrapper .react-calendar__navigation button {
+    font-size: 0.8em; /* Reduces navigation button font size for mobile */
+  }
+
+  .calendar-wrapper .react-calendar__month-view__days__day {
+    font-size: 0.8em; /* Adjusts day font size for mobile */
+  }
+
+  .calendar-wrapper .react-calendar__tile {
+    height: 40px; /* Reduces tile height on mobile */
+  }
+}

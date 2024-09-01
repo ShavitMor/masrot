@@ -9,9 +9,8 @@ const NavbarComponent = () => {
         <Link to="/">Expense Tracker</Link>
       </div>
       <ul className="navbar-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/expenses">Expenses</Link></li>
-        {/* Add more links as needed */}
+        {/* <li><Link to="/">Home</Link></li>
+        <li><Link to="/expenses">Expenses</Link></li> */}
       </ul>
     </nav>
   );

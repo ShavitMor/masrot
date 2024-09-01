@@ -28,3 +28,37 @@
 .navbar-links a:hover {
   color: #ffa500; /* Highlight color on hover */
 }
+
+/* Media Query for Mobile Devices */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the left */
+    padding: 1rem;
+  }
+
+  .navbar-links {
+    flex-direction: column; /* Stack links vertically */
+    gap: 0.5rem; /* Reduce gap between links */
+    margin-top: 1rem; /* Add margin to separate links from brand */
+  }
+
+  .navbar-links a {
+    font-size: 1.2rem; /* Increase font size for better touch targets */
+  }
+}
+
+/* Additional Media Query for Smaller Devices */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.5rem; /* Reduce padding on smaller screens */
+  }
+
+  .navbar-brand a {
+    font-size: 1.2rem; /* Reduce brand font size */
+  }
+
+  .navbar-links a {
+    font-size: 1rem; /* Adjust link font size */
+  }
+}

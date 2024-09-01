@@ -3,6 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Value } from 'react-calendar/dist/cjs/shared/types';
 import { useNavigate } from 'react-router-dom';
+import '../styles/CalendarComponent.css'; // Import the new CSS file
 
 const CalendarComponent = () => {
   const [value, setValue] = useState<Value>(new Date());
@@ -20,7 +21,7 @@ const CalendarComponent = () => {
       try {
         const expensesResponse = await fetch(`http://localhost:5000/expenses/range?startDate=${startDate}&endDate=${endDate}`);
         const monthlyExpenses = await expensesResponse.json();
-        setTotalExpenses(monthlyExpenses.reduce((sum: number, expense: any) => sum + expense.amount, 0));
+        setTotalExpenses(monthlyExpenses.reduce((sum: number, expense: any) => sum + expense.cost, 0));
 
         const salariesResponse = await fetch(`http://localhost:5000/salaries/range?startDate=${startDate}&endDate=${endDate}`);
         const monthlySalaries = await salariesResponse.json();
@@ -36,7 +37,6 @@ const CalendarComponent = () => {
   const handleDateChange = (value: Value) => {
     setValue(value);
     if (value instanceof Date) {
-      // Set the time to midnight to avoid time zone issues
       const fixedDate = new Date(value.setHours(0, 0, 0, 0));
       const selectedDate = fixedDate.toLocaleDateString('en-CA'); // YYYY-MM-DD format
       navigate(`/expenses/${selectedDate}`);
@@ -51,6 +51,14 @@ const CalendarComponent = () => {
 
   return (
     <div className="calendar-wrapper">
+      <nav className="navbar">
+        <h1>Expense Tracker</h1>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/reports">Reports</a></li>
+          <li><a href="/settings">Settings</a></li>
+        </ul>
+      </nav>
       <Calendar
         value={value}
         onChange={handleDateChange}

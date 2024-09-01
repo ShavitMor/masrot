@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import '../styles/ExpenseEntryPage.css'; // Ensure this file is properly linked
 
 interface Expense {
   _id: string;  // Assuming MongoDB's default ObjectId
   description: string;
-  amount: number;
+  amount: number;  // Quantity of the item
+  price: number;   // Price per unit of the item
+  cost: number;    // Calculated cost = amount * price
   date: string;
 }
 
@@ -21,6 +24,7 @@ const ExpenseEntryPage = () => {
   const [salaries, setSalaries] = useState<Salary[]>([]);
   const [expenseDescription, setExpenseDescription] = useState('');
   const [expenseAmount, setExpenseAmount] = useState<number | ''>('');
+  const [expensePrice, setExpensePrice] = useState<number | ''>('');
   const [salarySource, setSalarySource] = useState('');
   const [salaryAmount, setSalaryAmount] = useState<number | ''>('');
 
@@ -41,8 +45,14 @@ const ExpenseEntryPage = () => {
   }, [date]);
 
   const addExpense = async () => {
-    if (expenseDescription && expenseAmount) {
-      const newExpense = { description: expenseDescription, amount: Number(expenseAmount), date: date! };
+    if (expenseDescription && expenseAmount && expensePrice) {
+      const newExpense = { 
+        description: expenseDescription, 
+        amount: Number(expenseAmount), 
+        price: Number(expensePrice), 
+        cost: Number(expenseAmount) * Number(expensePrice), 
+        date: date! 
+      };
 
       const response = await fetch('http://localhost:5000/expenses', {
         method: 'POST',
@@ -54,6 +64,7 @@ const ExpenseEntryPage = () => {
       setExpenses((prev) => [...prev, savedExpense]);
       setExpenseDescription('');
       setExpenseAmount('');
+      setExpensePrice('');
     }
   };
 
@@ -90,64 +101,76 @@ const ExpenseEntryPage = () => {
     setSalaries((prev) => prev.filter((salary) => salary._id !== id));
   };
 
-  const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  // Update to calculate total expenses based on cost
+  const totalExpenses = expenses.reduce((sum, expense) => sum + expense.cost, 0);
   const totalSalaries = salaries.reduce((sum, salary) => sum + salary.amount, 0);
 
   return (
     <div className="expense-entry-page">
-      <h2>Expenses for {date}</h2>
+      <h2 className="section-title">Expenses for {date}</h2>
       <div className="input-group">
         <input
           type="text"
           placeholder="Item description"
           value={expenseDescription}
           onChange={(e) => setExpenseDescription(e.target.value)}
+          className="input-field"
         />
         <input
           type="number"
-          placeholder="Amount"
+          placeholder="Quantity"
           value={expenseAmount}
           onChange={(e) => setExpenseAmount(e.target.value === '' ? '' : Number(e.target.value))}
+          className="input-field"
         />
-        <button onClick={addExpense}>Add Expense</button>
+        <input
+          type="number"
+          placeholder="Price"
+          value={expensePrice}
+          onChange={(e) => setExpensePrice(e.target.value === '' ? '' : Number(e.target.value))}
+          className="input-field"
+        />
+        <button onClick={addExpense} className="add-button">Add Expense</button>
       </div>
-      <ul>
+      <ul className="expense-list">
         {expenses.map((expense) => (
-          <li key={expense._id}>
-            {expense.description}: ${expense.amount} 
-            <button onClick={() => deleteExpense(expense._id)}>Delete</button>
+          <li key={expense._id} className="expense-item">
+            <span>{expense.description} (x{expense.amount} @ ${expense.price}/unit): ${expense.cost}</span>
+            <button onClick={() => deleteExpense(expense._id)} className="delete-button">Delete</button>
           </li>
         ))}
       </ul>
-      <h2>Total Expenses: ${totalExpenses}</h2>
+      <h2 className="total-amount">Total Expenses: ${totalExpenses}</h2>
 
-      <h2>Salary for {date}</h2>
+      <h2 className="section-title">Salary for {date}</h2>
       <div className="input-group">
         <input
           type="text"
           placeholder="Salary source"
           value={salarySource}
           onChange={(e) => setSalarySource(e.target.value)}
+          className="input-field"
         />
         <input
           type="number"
           placeholder="Amount"
           value={salaryAmount}
           onChange={(e) => setSalaryAmount(e.target.value === '' ? '' : Number(e.target.value))}
+          className="input-field"
         />
-        <button onClick={addSalary}>Add Salary</button>
+        <button onClick={addSalary} className="add-button">Add Salary</button>
       </div>
-      <ul>
+      <ul className="salary-list">
         {salaries.map((salary) => (
-          <li key={salary._id}>
-            {salary.source}: ${salary.amount} 
-            <button onClick={() => deleteSalary(salary._id)}>Delete</button>
+          <li key={salary._id} className="salary-item">
+            <span>{salary.source}: ${salary.amount}</span>
+            <button onClick={() => deleteSalary(salary._id)} className="delete-button">Delete</button>
           </li>
         ))}
       </ul>
-      <h2>Total Salary: ${totalSalaries}</h2>
+      <h2 className="total-amount">Total Salary: ${totalSalaries}</h2>
 
-      <button onClick={() => window.history.back()}>Back to Calendar</button>
+      <button onClick={() => window.history.back()} className="back-button">Back to Calendar</button>
     </div>
   );
 };
