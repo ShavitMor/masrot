@@ -61,8 +61,8 @@ const CalendarComponent = () => {
         <h1>Expense Tracker</h1>
         <ul>
           <li><a href="/">Home</a></li>
-          <li><a href="/reports">Reports</a></li>
-          <li><a href="/settings">Settings</a></li>
+          {/* <li><a href="/reports">Reports</a></li>
+          <li><a href="/settings">Settings</a></li> */}
         </ul>
       </nav>
       {loading ? (

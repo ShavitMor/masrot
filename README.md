@@ -88,7 +88,7 @@ To get started with the project, follow these steps:
      npm run dev
      ```
 
-   The client will run on `http://localhost:3000` and the server will run on `https://masrot.onrender.com`.
+   The client will run on `http://localhost:3000` and the server will run on `https://localhost:5000`.
 
 ## **Usage**
 

@@ -31,11 +31,11 @@ const ExpenseEntryPage = () => {
   useEffect(() => {
     if (date) {
       const fetchData = async () => {
-        const response = await fetch(`https://masrot.onrender.com/expenses?date=${date}`);
+        const response = await fetch(`https://localhost:5000/expenses?date=${date}`);
         const allExpenses = await response.json();
         setExpenses(allExpenses);
 
-        const salariesResponse = await fetch(`https://masrot.onrender.com/salaries?date=${date}`);
+        const salariesResponse = await fetch(`https://localhost:5000/salaries?date=${date}`);
         const allSalaries = await salariesResponse.json();
         setSalaries(allSalaries);
       };
@@ -54,7 +54,7 @@ const ExpenseEntryPage = () => {
         date: date! 
       };
 
-      const response = await fetch('https://masrot.onrender.com/expenses', {
+      const response = await fetch('https://localhost:5000/expenses', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newExpense),
@@ -72,7 +72,7 @@ const ExpenseEntryPage = () => {
     if (salarySource && salaryAmount) {
       const newSalary = { source: salarySource, amount: Number(salaryAmount), date: date! };
 
-      const response = await fetch('https://masrot.onrender.com/salaries', {
+      const response = await fetch('https://localhost:5000/salaries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newSalary),
@@ -86,7 +86,7 @@ const ExpenseEntryPage = () => {
   };
 
   const deleteExpense = async (id: string) => {
-    await fetch(`https://masrot.onrender.com/expenses/${id}`, {
+    await fetch(`https://localhost:5000/expenses/${id}`, {
       method: 'DELETE',
     });
 
@@ -94,7 +94,7 @@ const ExpenseEntryPage = () => {
   };
 
   const deleteSalary = async (id: string) => {
-    await fetch(`https://masrot.onrender.com/salaries/${id}`, {
+    await fetch(`https://localhost:5000/salaries/${id}`, {
       method: 'DELETE',
     });
 
