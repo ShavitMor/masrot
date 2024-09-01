@@ -3,13 +3,14 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Value } from 'react-calendar/dist/cjs/shared/types';
 import { useNavigate } from 'react-router-dom';
-import '../styles/CalendarComponent.css'; // Import the new CSS file
+import '../styles/CalendarComponent.css';
 
 const CalendarComponent = () => {
   const [value, setValue] = useState<Value>(new Date());
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalSalaries, setTotalSalaries] = useState(0);
   const [activeStartDate, setActiveStartDate] = useState(new Date());
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,6 +18,8 @@ const CalendarComponent = () => {
       const currentMonth = activeStartDate.getMonth();
       const startDate = new Date(activeStartDate.getFullYear(), currentMonth, 1).toISOString().split('T')[0];
       const endDate = new Date(activeStartDate.getFullYear(), currentMonth + 1, 0).toISOString().split('T')[0];
+
+      setLoading(true);
 
       try {
         const expensesResponse = await fetch(`https://masrot.onrender.com/expenses/range?startDate=${startDate}&endDate=${endDate}`);
@@ -28,6 +31,8 @@ const CalendarComponent = () => {
         setTotalSalaries(monthlySalaries.reduce((sum: number, salary: any) => sum + salary.amount, 0));
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -45,6 +50,7 @@ const CalendarComponent = () => {
 
   const handleActiveStartDateChange = ({ activeStartDate }: { activeStartDate: Date | null }) => {
     if (activeStartDate) {
+      console.log('New activeStartDate:', activeStartDate);
       setActiveStartDate(activeStartDate);
     }
   };
@@ -59,19 +65,31 @@ const CalendarComponent = () => {
           <li><a href="/settings">Settings</a></li>
         </ul>
       </nav>
-      <Calendar
-        value={value}
-        onChange={handleDateChange}
-        onActiveStartDateChange={handleActiveStartDateChange}
-      />
-      <div className="monthly-totals">
-        <h2>Current Month Totals</h2>
-        <p>Total Expenses: ${totalExpenses}</p>
-        <p>Total Income: ${totalSalaries}</p>
-        <p>The Ma'asrot: ${totalSalaries / 10 - totalExpenses}</p>
-      </div>
+      {loading ? (
+        <div className="loading-spinner">
+          <div className="spinner"></div>
+        </div>
+      ) : (
+        <>
+          <Calendar
+            value={value}
+            onChange={handleDateChange}
+            onActiveStartDateChange={handleActiveStartDateChange}
+            view="month"
+            // Ensure `activeStartDate` is properly set in the Calendar
+            activeStartDate={activeStartDate}
+          />
+          <div className="monthly-totals">
+            <h2>Current Month Totals</h2>
+            <p>Total Expenses: ${totalExpenses}</p>
+            <p>Total Income: ${totalSalaries}</p>
+            <p>The Ma'asrot: ${totalSalaries / 10 - totalExpenses}</p>
+          </div>
+        </>
+      )}
     </div>
   );
 };
 
 export default CalendarComponent;
+
