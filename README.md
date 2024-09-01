@@ -88,7 +88,7 @@ To get started with the project, follow these steps:
      npm run dev
      ```
 
-   The client will run on `http://localhost:3000` and the server will run on `https://localhost:5000`.
+   The client will run on `http://localhost:3000`,if you specify it correctly in the .env file - the server will run on `http://localhost:5000` .
 
 ## **Usage**
 
