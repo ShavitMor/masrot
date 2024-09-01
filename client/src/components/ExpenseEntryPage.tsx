@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 interface Expense {
+  _id: string;  // Assuming MongoDB's default ObjectId
   description: string;
   amount: number;
   date: string;
 }
 
 interface Salary {
+  _id: string;  // Assuming MongoDB's default ObjectId
   source: string;
   amount: number;
   date: string;
@@ -42,13 +44,14 @@ const ExpenseEntryPage = () => {
     if (expenseDescription && expenseAmount) {
       const newExpense = { description: expenseDescription, amount: Number(expenseAmount), date: date! };
 
-      await fetch('http://localhost:5000/expenses', {
+      const response = await fetch('http://localhost:5000/expenses', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newExpense),
       });
 
-      setExpenses((prev) => [...prev, newExpense]);
+      const savedExpense = await response.json();
+      setExpenses((prev) => [...prev, savedExpense]);
       setExpenseDescription('');
       setExpenseAmount('');
     }
@@ -58,16 +61,33 @@ const ExpenseEntryPage = () => {
     if (salarySource && salaryAmount) {
       const newSalary = { source: salarySource, amount: Number(salaryAmount), date: date! };
 
-      await fetch('http://localhost:5000/salaries', {
+      const response = await fetch('http://localhost:5000/salaries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newSalary),
       });
 
-      setSalaries((prev) => [...prev, newSalary]);
+      const savedSalary = await response.json();
+      setSalaries((prev) => [...prev, savedSalary]);
       setSalarySource('');
       setSalaryAmount('');
     }
+  };
+
+  const deleteExpense = async (id: string) => {
+    await fetch(`http://localhost:5000/expenses/${id}`, {
+      method: 'DELETE',
+    });
+
+    setExpenses((prev) => prev.filter((expense) => expense._id !== id));
+  };
+
+  const deleteSalary = async (id: string) => {
+    await fetch(`http://localhost:5000/salaries/${id}`, {
+      method: 'DELETE',
+    });
+
+    setSalaries((prev) => prev.filter((salary) => salary._id !== id));
   };
 
   const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
@@ -92,8 +112,11 @@ const ExpenseEntryPage = () => {
         <button onClick={addExpense}>Add Expense</button>
       </div>
       <ul>
-        {expenses.map((expense, index) => (
-          <li key={index}>{expense.description}: ${expense.amount}</li>
+        {expenses.map((expense) => (
+          <li key={expense._id}>
+            {expense.description}: ${expense.amount} 
+            <button onClick={() => deleteExpense(expense._id)}>Delete</button>
+          </li>
         ))}
       </ul>
       <h2>Total Expenses: ${totalExpenses}</h2>
@@ -115,8 +138,11 @@ const ExpenseEntryPage = () => {
         <button onClick={addSalary}>Add Salary</button>
       </div>
       <ul>
-        {salaries.map((salary, index) => (
-          <li key={index}>{salary.source}: ${salary.amount}</li>
+        {salaries.map((salary) => (
+          <li key={salary._id}>
+            {salary.source}: ${salary.amount} 
+            <button onClick={() => deleteSalary(salary._id)}>Delete</button>
+          </li>
         ))}
       </ul>
       <h2>Total Salary: ${totalSalaries}</h2>
