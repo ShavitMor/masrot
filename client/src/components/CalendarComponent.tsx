@@ -19,11 +19,11 @@ const CalendarComponent = () => {
       const endDate = new Date(activeStartDate.getFullYear(), currentMonth + 1, 0).toISOString().split('T')[0];
 
       try {
-        const expensesResponse = await fetch(`http://localhost:5000/expenses/range?startDate=${startDate}&endDate=${endDate}`);
+        const expensesResponse = await fetch(`https://masrot.onrender.com/expenses/range?startDate=${startDate}&endDate=${endDate}`);
         const monthlyExpenses = await expensesResponse.json();
         setTotalExpenses(monthlyExpenses.reduce((sum: number, expense: any) => sum + expense.cost, 0));
 
-        const salariesResponse = await fetch(`http://localhost:5000/salaries/range?startDate=${startDate}&endDate=${endDate}`);
+        const salariesResponse = await fetch(`https://masrot.onrender.com/salaries/range?startDate=${startDate}&endDate=${endDate}`);
         const monthlySalaries = await salariesResponse.json();
         setTotalSalaries(monthlySalaries.reduce((sum: number, salary: any) => sum + salary.amount, 0));
       } catch (error) {
