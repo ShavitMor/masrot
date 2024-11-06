@@ -54,7 +54,7 @@ const ExpenseEntryPage = () => {
         date: date! 
       };
 
-      const response = await fetch('${process.env.REACT_APP_API_URL}/expenses', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/expenses`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newExpense),
