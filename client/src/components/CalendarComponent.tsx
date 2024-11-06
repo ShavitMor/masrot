@@ -76,6 +76,8 @@ const CalendarComponent = () => {
       ) : (
         <>
           <Calendar
+            key={activeStartDate.toString()} // Forces Calendar to re-render on month change
+
             value={value}
             onChange={handleDateChange}
             onActiveStartDateChange={handleActiveStartDateChange}
@@ -85,9 +87,9 @@ const CalendarComponent = () => {
           
           <div className="monthly-totals">
             <h2>Current Month Totals</h2>
-            <p>Total Expenses: ${totalExpenses.toFixed(2)}</p>
-            <p>Total Income: ${totalSalaries.toFixed(2)}</p>
-            <p>The Ma'asrot: ${(totalSalaries / 10 - totalExpenses).toFixed(2)}</p>
+            <p>הוצאות: ${totalExpenses.toFixed(2)}</p>
+            <p>הכנסות: ${totalSalaries.toFixed(2)}</p>
+            <p>מעשרות: ${(totalSalaries / 10 - totalExpenses).toFixed(2)}</p>
           </div>
 
           {/* Display list of expenses */}
