@@ -72,7 +72,7 @@ const ExpenseEntryPage = () => {
     if (salarySource && salaryAmount) {
       const newSalary = { source: salarySource, amount: Number(salaryAmount), date: date! };
 
-      const response = await fetch('${process.env.REACT_APP_API_URL}/salaries', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/salaries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newSalary),
