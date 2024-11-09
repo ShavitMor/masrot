@@ -18,8 +18,9 @@ const CalendarComponent = () => {
   useEffect(() => {
     const fetchMonthlyData = async () => {
       const currentMonth = activeStartDate.getMonth();
+      const day = new Date(activeStartDate.getFullYear(), currentMonth+1, 0).getDate()
       const startDate = new Date(activeStartDate.getFullYear(), currentMonth, 2).toISOString().split('T')[0];
-      const endDate = new Date(activeStartDate.getFullYear(), currentMonth , 31).toISOString().split('T')[0];
+      const endDate = new Date(activeStartDate.getFullYear(), currentMonth , day+1).toISOString().split('T')[0];
 
       setLoading(true);
 
@@ -32,7 +33,6 @@ const CalendarComponent = () => {
 
         const salariesResponse = await fetch(`${process.env.REACT_APP_API_URL}/salaries/range?startDate=${startDate}&endDate=${endDate}`);
         const monthlySalaries = await salariesResponse.json();
-        console.log(startDate, endDate, monthlySalaries);
         setSalaries(monthlySalaries); // Store salaries data for listing
         setTotalSalaries(monthlySalaries.reduce((sum: number, salary: any) => sum + salary.amount, 0));
       } catch (error) {
@@ -56,7 +56,6 @@ const CalendarComponent = () => {
 
   const handleActiveStartDateChange = ({ activeStartDate }: { activeStartDate: Date | null }) => {
     if (activeStartDate) {
-      console.log('New activeStartDate:', activeStartDate);
       setActiveStartDate(activeStartDate);
     }
   };

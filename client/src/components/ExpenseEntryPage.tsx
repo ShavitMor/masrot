@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/ExpenseEntryPage.css'; // Ensure this file is properly linked
 
 interface Expense {
@@ -20,6 +20,7 @@ interface Salary {
 
 const ExpenseEntryPage = () => {
   const { date } = useParams<{ date: string }>();
+  const navigate = useNavigate();
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [salaries, setSalaries] = useState<Salary[]>([]);
   const [expenseDescription, setExpenseDescription] = useState('');
@@ -170,7 +171,7 @@ const ExpenseEntryPage = () => {
       </ul>
       <h2 className="total-amount">Total Salary: ${totalSalaries}</h2>
 
-      <button onClick={() => window.history.back()} className="back-button">Back to Calendar</button>
+      <button onClick={() => navigate(-1)} className="back-button">Back to Calendar</button>
     </div>
   );
 };
